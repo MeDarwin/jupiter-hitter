@@ -1,0 +1,45 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: black;
+}
+
+body {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  background-image: url(../../assets/img/bg.png);
+  background-size: cover;
+  z-index: 1;
+}
+
+.menu,
+canvas {
+  height: inherit;
+  width: inherit;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+main {
+  width: 960px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: 1fr;
+}
