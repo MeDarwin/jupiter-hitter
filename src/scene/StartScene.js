@@ -1,12 +1,10 @@
 import { canvas, ctx } from "../main";
 import { BackgroundScene } from "./BackgroundScene";
 import { BallScene } from "./BallScene";
-import { BaseScene } from "./BaseScene";
 import { CharacterScene, PlayerScene } from "./CharacterScene";
 
-export class StartScene extends BaseScene {
+export class StartScene {
   constructor() {
-    super();
     console.log("StartScene.INIT");
     this.backgroundScene = new BackgroundScene(this);
     this.ballScene = new BallScene(this)
@@ -18,9 +16,20 @@ export class StartScene extends BaseScene {
    * @return {void} This function does not return any value.
    */
   draw() {
+    this.playerScene.isAlive && this.playerScene.draw()
     this.backgroundScene.draw()
     this.ballScene.draw()
-    this.playerScene.draw()
+    /* ------------------------------- CENTER AXIS ------------------------------- */
+    ctx.beginPath()
+    ctx.strokeStyle = 'green'
+    ctx.lineTo(canvas.clientWidth / 2, 0);
+    ctx.lineTo(canvas.clientWidth / 2, canvas.clientHeight);
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.lineTo(0, canvas.clientHeight / 2);
+    ctx.lineTo(canvas.clientWidth, canvas.clientHeight / 2);
+    ctx.stroke()
+    /* ------------------------------- CENTER AXIS ------------------------------- */
   }
   /**
    * Register all scene update below 
@@ -29,7 +38,7 @@ export class StartScene extends BaseScene {
   update() {
     this.backgroundScene.update()
     this.ballScene.update()
-    this.playerScene.update()
+    this.playerScene.isAlive && this.playerScene.update()
   }
 }
 

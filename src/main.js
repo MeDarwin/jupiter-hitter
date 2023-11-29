@@ -17,10 +17,10 @@ const animate = () => {
 
   //check whether elapsed has passed 1 second (1000 ms)
   if (elapsed > fpsInterval) {
-    /* -------------------------------- LOG DEBUG ------------------------------- */
+    /* -------------------------------- FPS DEBUG ------------------------------- */
     // console.clear();
     // console.table({ then, now, elapsed });
-    /* -------------------------------- LOG DEBUG ------------------------------- */
+    /* -------------------------------- FPS DEBUG ------------------------------- */
 
     /* ------------------------------ RUN GAMESCENE ----------------------------- */
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
