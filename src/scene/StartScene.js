@@ -6,16 +6,29 @@ import { BotScene, PlayerScene } from "./CharacterScene";
 export class StartScene {
   constructor() {
     console.log("StartScene.INIT");
+    /** @type {"COUNTDOWN"|"GAME"|"GAMEOVER"|"PAUSE"|"WIN"|"UNINITIALIZED"}*/
+    this.gameStatus = "UNINITIALIZED"
     this.assignNumber = []
+    this.countdown = 3
+    this.fontSize = 180
     this.randNumGenerate = () => Math.floor(Math.random() * 4 + 1)
+    this.startCountdown = () => setInterval(() => {
+      if(this.countdown === 0) {
+        this.gameStatus = "GAME"
+      }
+      if (this.gameStatus === "COUNTDOWN") {
+        this.countdown -= 1;
+        this.fontSize = 180
+      }
+    }, 1000)
     for (let i = 1; i <= 4; i++) {
-        let randomNumber = this.randNumGenerate()
+      let randomNumber = this.randNumGenerate()
       while (this.assignNumber.includes(randomNumber)) {
         randomNumber = this.randNumGenerate()
       }
       this.assignNumber.push(randomNumber)
     }
-    /** @type {"DEV"|"PROD"}*/this.staging = "PROD"
+    /** @type {"DEV"|"READY"}*/this.staging = "READY"
     /* --------------------------------- BG GRAD -------------------------------- */
     this.blueColor = 'rgba(5, 2, 55, 1)';
     this.purpleColor = 'rgba(67, 11, 76, 1)';
@@ -43,7 +56,15 @@ export class StartScene {
     this.bot3.isAlive && this.bot3.draw()
     this.backgroundScene.draw()
     this.ballScene.draw()
-    /* ------------------------------- CENTER AXIS ------------------------------- */
+    if (this.gameStatus === "COUNTDOWN") {
+      this.fontSize -= 1
+      ctx.font = `bold ${this.fontSize}px Kdam Thmor Pro`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle"
+      ctx.fillStyle = "white";
+      ctx.fillText(this.countdown, canvas.clientWidth / 2, canvas.clientHeight / 2);
+    }
+    //DEBUG MODE
     if (this.staging === "DEV") {
       this.playerScene.isAlive && this.playerScene.debug()
       this.bot1.isAlive && this.bot1.debug()
@@ -51,6 +72,7 @@ export class StartScene {
       this.bot3.isAlive && this.bot3.debug()
       this.backgroundScene.debug()
       this.ballScene.debug()
+      /* ------------------------------- CENTER AXIS ------------------------------- */
       ctx.beginPath()
       ctx.strokeStyle = 'green'
       ctx.lineTo(canvas.clientWidth / 2, 0);
@@ -60,14 +82,15 @@ export class StartScene {
       ctx.lineTo(0, canvas.clientHeight / 2);
       ctx.lineTo(canvas.clientWidth, canvas.clientHeight / 2);
       ctx.stroke()
+      /* ------------------------------- CENTER AXIS ------------------------------- */
     }
-    /* ------------------------------- CENTER AXIS ------------------------------- */
   }
   /**
    * Register all scene update below 
    * @return {void} This function does not return any value.
    */
   update() {
+    if (this.gameStatus !== "GAME") return; //stop if not on game
     this.backgroundScene.update()
     this.ballScene.update()
     this.playerScene.isAlive && this.playerScene.update()
@@ -77,4 +100,4 @@ export class StartScene {
   }
 }
 
-export const startScene = new StartScene(canvas.clientWidth, canvas.clientHeight); //INIT SCENE
+export const startScene = new StartScene(canvas?.clientWidth, canvas?.clientHeight); //INIT SCENE

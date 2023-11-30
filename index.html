@@ -5,16 +5,31 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="stylesheet" href="./src/styles/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="./src/main.js" type="module" defer></script>
   <title>Jupiter Hitter</title>
 </head>
 
 <body>
   <main>
-    <div class="menu"></div>
+    <div class="menu" id="menu">
+      <div class="title">
+        <h1>Jupiter Hitter</h1>
+        <h4>Beat the opponent and conquer jupiter!</h2>
+      </div>
+      <input type="text" placeholder="Enter Your Name">
+      <button id="btnPlay">Start Game</button>
+      <div class="leaderboard">
+        <h4>Your Time Record</h4>
+        <h2>00:00:00</h2>
+      </div>
+    </div>
     <canvas id="cvs" width="960" height="600"></canvas>
   </main>
+  <script src="./src/main.js" type="module"></script>
+  <script src="src/scene/StartScene.js" type="module"></script>
 </body>
 
 </html>

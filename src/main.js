@@ -1,5 +1,6 @@
 import { startScene } from './scene/StartScene'
-
+const menu = document.querySelector("div.menu")
+const /** @type {HTMLButtonElement} */ btnPlay = document.getElementById("btnPlay")
 const /** @type {HTMLCanvasElement} */ canvas = document.getElementById("cvs");
 const /** @type {CanvasRenderingContext2D} */ ctx = canvas.getContext("2d");
 let fpsInterval, initTime, now, then, elapsed; // all requirements for fps
@@ -39,6 +40,13 @@ const startAnimate = (fps = 1) => {
   animate();
   console.log(`Game has started, TIMESTAMP: ${initTime}`);
 };
-startAnimate(60); //call to init animation to begin the game and set fps as parameter
+// startAnimate(60); //call to init animation to begin the game and set fps as parameter
+
+btnPlay.onclick = () => {
+  menu.remove()
+  startScene.gameStatus = "COUNTDOWN"
+  startScene.startCountdown()
+};
+startAnimate(60);
 
 export { ctx, canvas };

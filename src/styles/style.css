@@ -1,8 +1,5 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-}
-
 * {
+  font-family: 'Kdam Thmor Pro', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -19,10 +16,82 @@ body {
   align-items: center;
 }
 
-canvas {
+.menu {
+  z-index: 1;
   background-image: url(../../assets/img/bg.png);
   background-size: cover;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title>h1 {
+  padding: 4rem 0 .5rem 0;
+  color: whitesmoke;
+  font-size: 3.75rem;
+}
+
+.title>h4 {
+  font-weight: normal;
+  color: orange;
+}
+
+input::placeholder {
+  color: whitesmoke;
+  text-align: center;
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  color: whitesmoke;
+  border-radius: .5rem;
+  padding: 1.5rem .625rem;
+  width: 17rem;
+  font-size: large;
+  background-color: transparent;
+  margin: 4rem 0 2rem 0;
+  border: whitesmoke solid 2px;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  background-color: darkorange;
+}
+
+button {
+  font-size: 2rem;
+  border-radius: .5rem;
+  border: whitesmoke solid 2px;
+  color: whitesmoke;
+  background-color: orange;
+  padding: 1rem 1.25rem;
+}
+
+.leaderboard>h2 {
+  font-weight: normal;
+  color: whitesmoke;
+}
+
+.leaderboard>h4 {
+  font-weight: normal;
+  color: orange;
+}
+
+.leaderboard {
+  
+  margin-top: auto;
+  margin-bottom: 1.25rem;
 }
 
 .menu,

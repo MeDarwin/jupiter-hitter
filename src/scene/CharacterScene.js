@@ -47,15 +47,12 @@ export class PlayerScene {
           if (this.crouch) return;
           this.crouch = true
           break;
-        default:
-          console.log(key);
-          break;
       }
     })
     /* ------------------------------- CONTROLLER ------------------------------- */
   }
 
-  debug(){
+  debug() {
     ctx.save() //save default context (where ctx x and y = 0, not translated)
     ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
     ctx.rotate(this.playerRotation * Math.PI / 180) //rotate player according to player number
@@ -104,16 +101,18 @@ export class PlayerScene {
         ? this.inRange = true
         : this.inRange = false;
 
-    //crouch for player
+    //crouch for player (NOTE: player will still receive damage on uncrouched state)
     if (this.crouch) {
-      if (!this.uncrouch) this.y -= 3
-      if (this.y <= -this.playerSize) this.uncrouch = true
+      this.y -= 3
+      if (this.y <= -this.playerSize) {
+        this.uncrouch = true; this.crouch = false
+      }
     }
     if (this.uncrouch) {
       this.y += 3
       if (this.y > (this.playerSize / 2)) {
-        this.y -= this.y - (this.playerSize / 2);
-        this.crouch = false; this.uncrouch = false
+        this.y -= this.y - (this.playerSize / 2); //tolerate miscalculation
+        this.uncrouch = false
       }
     }
   }
@@ -164,7 +163,7 @@ export class BotScene {
     ctx.strokeRect(-this.x, -this.y - (this.jupiterSize / 2) - 40, this.botSize, this.botSize) //! draw debug stroke for bot
     /* ---------------------------------- DEBUG --------------------------------- */
     ctx.restore() //restore context to last saved context (default context)
-  
+
   }
   draw() {
     ctx.save() //save default context (where ctx x and y = 0, not translated)
