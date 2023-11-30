@@ -6,7 +6,7 @@ export class BallScene {
         this.game = game
         console.log("BallScene.INIT");
         this.ballRotationAngle = 0; //rotation ball (on degree scale)
-        this.direction = "positive" //direction of rotation;
+        this.direction = "positive" //direction of rotation (positive = clockwise, negative = counter-clockwise)
         this.ballSize = 40
         this.speed = 1
         /* ------------------------------ BALL PRELOAD ------------------------------ */
@@ -14,7 +14,7 @@ export class BallScene {
         this.ball.src = "../../assets/img/ball.png"
         /* ------------------------------ BALL PRELOAD ------------------------------ */
     }
-    draw() {
+    debug() {
         ctx.save() //save deafult context (where ctx x and y = 0, not translated)
         ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
         ctx.rotate((this.ballRotationAngle * Math.PI) / 180) // rotate ball according to rotation angle and convert to radian
@@ -22,6 +22,12 @@ export class BallScene {
         ctx.strokeStyle = "red" //! debug ball size
         ctx.strokeRect(-this.ballSize / 2, -(this.game.backgroundScene.jupiterSize / 2) - 80, this.ballSize, this.ballSize) //! draw debug stroke
         /* ---------------------------------- DEBUG --------------------------------- */
+        ctx.restore() //restore to deafult context
+    }
+    draw() {
+        ctx.save() //save deafult context (where ctx x and y = 0, not translated)
+        ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
+        ctx.rotate((this.ballRotationAngle * Math.PI) / 180) // rotate ball according to rotation angle and convert to radian
         ctx.drawImage(
             this.ball,
             -this.ballSize / 2,
@@ -31,7 +37,7 @@ export class BallScene {
     }
     update() {
         this.ballRotationAngle === 360 && (this.ballRotationAngle = 0) //reset rotation after 360deg spin
-        this.ballRotationAngle <0 && (this.ballRotationAngle = 360) //reset rotation when decreasing
+        this.ballRotationAngle < 0 && (this.ballRotationAngle = 360) //reset rotation when decreasing
         this.ballRotationAngle += this.direction === "positive" ? this.speed : -this.speed //rotate ball around jupiter
     }
 }

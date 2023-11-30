@@ -1,33 +1,24 @@
 import { canvas, ctx } from "../main";
 import { StartScene } from "./StartScene";
 
-export class CharacterScene {
-  constructor(/** @type {StartScene} */ game) {
-    this.game = game
-    console.log("CharacterScene.INIT");
-    this.playerArray = [1, 2, 3, 4]
-  }
-}
-
 export class PlayerScene {
-  constructor(/** @type {StartScene} */game) {
+  constructor(/** @type {StartScene} */game, playerNumber) {
     this.game = game
+    this.playerNumber = playerNumber
     console.log("PlayerScene.INIT");
     this.hitting = false
     this.isAlive = true
     this.inRange = false
-    this.playerArray = this.game.characterScene.playerArray //destructure
+    this.crouch = false
+    this.uncrouch = false
     this.jupiterSize = this.game.backgroundScene.jupiterSize //destructure
-    this.ballDirection = this.game.ballScene.direction //destructure
+    this.playerDirection = this.game.ballScene.direction
     this.playerSize = 100
     this.lives = 3
+    this.range = 30
     this.x = this.playerSize / 2 //place to center x
     this.y = this.playerSize / 2 //place to center y
-    this.playerNumber = 1 //assign player number
-    // this.playerNumber = Math.floor(Math.random() * this.playerArray.length + 1) //assign player number
-    this.playerArray.splice(this.playerArray.indexOf(this.playerNumber), 1) //remove occupied numebr
     this.playerRotation = (this.playerNumber * 90) - 45 //rotate player according to player number (on degree scale)
-    console.table({ array: this.game.characterScene.playerArray, number: this.playerNumber, pRot: this.playerRotation + 30 });
     /* ------------------------------ IMAGE PRELOAD ----------------------------- */
     this.playerSpriteDefault = new Image()
     this.playerSpriteCaught = new Image()
@@ -37,54 +28,217 @@ export class PlayerScene {
     this.playerSpriteHit.src = "../../assets/img/bot0-hit.png"
     /* ------------------------------ IMAGE PRELOAD ----------------------------- */
     this.playerSprite = this.playerSpriteDefault
-    console.log(this.playerRotation - 30, this.playerRotation + 30);
     /* ------------------------------- CONTROLLER ------------------------------- */
     window.addEventListener("keydown", ({ key }) => {
+      if (!this.isAlive) return;
       switch (key) {
         case " ":
+          if (this.crouch) return;
+          if (this.hitting) return;
           this.hitting = true
           this.playerSprite = this.playerSpriteHit
-          setTimeout(() => { this.playerSprite = this.playerSpriteDefault; this.hitting = false }, 1000)
+          setTimeout(() => { this.playerSprite = this.playerSpriteDefault; this.hitting = false }, 700)
+          this.playerDirection = this.game.ballScene.direction
 
           if (!this.inRange) return;
-          this.ballDirection = this.game.ballScene.direction = ((this.game.ballScene.direction === "positive") ? "negative" : "positive")
+          this.game.ballScene.direction = this.game.ballScene.direction = ((this.game.ballScene.direction === "positive") ? "negative" : "positive")
+          break;
+        case "ArrowDown":
+          if (this.crouch) return;
+          this.crouch = true
+          break;
+        default:
+          console.log(key);
           break;
       }
     })
     /* ------------------------------- CONTROLLER ------------------------------- */
   }
+
+  debug(){
+    ctx.save() //save default context (where ctx x and y = 0, not translated)
+    ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
+    ctx.rotate(this.playerRotation * Math.PI / 180) //rotate player according to player number
+    ctx.scale(this.playerDirection === "positive" ? 1 : -1, 1)
+    /* ---------------------------------- DEBUG --------------------------------- */
+    ctx.strokeStyle = "yellow" //! debug player range
+    ctx.strokeRect(this.x - this.playerSize - this.range, -this.y - (this.jupiterSize / 2) - 40, this.range, this.playerSize) //! draw debug stroke for area
+    ctx.strokeRect(this.x, -this.y - (this.jupiterSize / 2) - 40, this.range, this.playerSize) //! draw debug stroke for area
+    ctx.strokeStyle = "blue" //! debug player size
+    ctx.strokeRect(-this.x, -this.y - (this.jupiterSize / 2) - 40, this.playerSize, this.playerSize) //! draw debug stroke for player
+    /* ---------------------------------- DEBUG --------------------------------- */
+    ctx.restore() //restore context to last saved context (default context)
+  }
+
   draw() {
     ctx.save() //save default context (where ctx x and y = 0, not translated)
     ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
     ctx.rotate(this.playerRotation * Math.PI / 180) //rotate player according to player number
-    /* ---------------------------------- DEBUG --------------------------------- */
-    ctx.strokeStyle = "yellow" //! debug player range
-    ctx.strokeRect(-this.x - this.playerSize / 2, -this.y - (this.jupiterSize / 2) - 40, this.playerSize / 2, this.playerSize) //! draw debug stroke for area
-    ctx.strokeRect(this.x, -this.y - (this.jupiterSize / 2) - 40, this.playerSize / 2, this.playerSize) //! draw debug stroke for area
-    ctx.strokeStyle = "blue" //! debug player size
-    ctx.strokeRect(-this.x, -this.y - (this.jupiterSize / 2) - 40, this.playerSize, this.playerSize) //! draw debug stroke for player
-    /* ---------------------------------- DEBUG --------------------------------- */
+    ctx.scale(this.playerDirection === "positive" ? 1 : -1, 1)
     ctx.drawImage(this.playerSprite, -this.x, -this.y - (this.jupiterSize / 2) - 40, this.playerSize, this.playerSize)
     ctx.restore() //restore context to last saved context (default context)
   }
   update() {
-    if (this.lives === 0) this.isAlive = false // set alive to false if lives = 0 (dead)
+    // set alive to false if lives = 0 (dead)
+    if (this.lives === 0) this.isAlive = false
+
     //check if ball hit player
     if (this.game.ballScene.ballRotationAngle === this.playerRotation) {
-      console.log("PlayerScene.HIT", this.lives -= 1);
+      if (this.crouch) return;
+      console.log("PlayerScene.HIT");
+      this.lives -= 1
       this.playerSprite = this.playerSpriteCaught
-      setTimeout(() => this.playerSprite = this.playerSpriteDefault, 700)
+      this.hitting = true
+      setTimeout(() => { this.playerSprite = this.playerSpriteDefault; this.hitting = false }, 700)
     }
+
     //check if ball in range positive
-    if (this.ballDirection == "positive")
-      (this.game.ballScene.ballRotationAngle > this.playerRotation - 30 && this.game.ballScene.ballRotationAngle < this.playerRotation)
+    if (this.game.ballScene.direction === "positive")
+      (this.game.ballScene.ballRotationAngle > this.playerRotation - this.range && this.game.ballScene.ballRotationAngle < this.playerRotation)
         ? this.inRange = true
         : this.inRange = false;
 
     //check if ball in range negative
-    if (this.ballDirection == "negative")
-      (this.game.ballScene.ballRotationAngle < this.playerRotation + 30 && this.game.ballScene.ballRotationAngle > this.playerRotation)
+    if (this.game.ballScene.direction === "negative")
+      (this.game.ballScene.ballRotationAngle < this.playerRotation + this.range && this.game.ballScene.ballRotationAngle > this.playerRotation)
         ? this.inRange = true
-        : this.inRange = false
+        : this.inRange = false;
+
+    //crouch for player
+    if (this.crouch) {
+      if (!this.uncrouch) this.y -= 3
+      if (this.y <= -this.playerSize) this.uncrouch = true
+    }
+    if (this.uncrouch) {
+      this.y += 3
+      if (this.y > (this.playerSize / 2)) {
+        this.y -= this.y - (this.playerSize / 2);
+        this.crouch = false; this.uncrouch = false
+      }
+    }
+  }
+}
+
+export class BotScene {
+  constructor(/** @type {StartScene} */ game, botNumber, spriteNumber) {
+    this.game = game
+    this.botNumber = botNumber
+    console.log("BotScene.INIT");
+    this.botChance = ["caught", "hit", "crouch"]
+    this.botNextMoveQueue = []
+    /** @type {"hit"|"crouch"|"caught"}*/ this.botNextMove = "hit"
+    this.hitting = false
+    this.isAlive = true
+    this.inRange = false
+    this.crouch = false
+    this.uncrouch = false
+    this.jupiterSize = this.game.backgroundScene.jupiterSize //destructure
+    this.botDirection = this.game.ballScene.direction
+    this.botSize = 100
+    this.lives = 3
+    this.range = 20
+    this.x = this.botSize / 2 //place to center x
+    this.y = this.botSize / 2 //place to center y
+    this.botRotation = (this.botNumber * 90) - 45 //rotate bot according to bot number (on degree scale)
+    /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+    this.botSpriteDefault = new Image()
+    this.botSpriteCaught = new Image()
+    this.botSpriteHit = new Image()
+    this.botSpriteDefault.src = `../../assets/img/bot${spriteNumber}.png`
+    this.botSpriteCaught.src = `../../assets/img/bot${spriteNumber}-caught.png`
+    this.botSpriteHit.src = `../../assets/img/bot${spriteNumber}-hit.png`
+    /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+    this.botSprite = this.botSpriteDefault
+  }
+
+  debug() {
+    ctx.save() //save default context (where ctx x and y = 0, not translated)
+    ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
+    ctx.rotate(this.botRotation * Math.PI / 180) //rotate bot according to bot number
+    ctx.scale(this.botDirection === "positive" ? 1 : -1, 1)
+    /* ---------------------------------- DEBUG --------------------------------- */
+    ctx.strokeStyle = "yellow" //! debug bot range
+    ctx.strokeRect(this.x - this.botSize - this.range, -this.y - (this.jupiterSize / 2) - 40, this.range, this.botSize) //! draw debug stroke for area
+    ctx.strokeRect(this.x, -this.y - (this.jupiterSize / 2) - 40, this.range, this.botSize) //! draw debug stroke for area
+    ctx.strokeStyle = "blue" //! debug bot size
+    ctx.strokeRect(-this.x, -this.y - (this.jupiterSize / 2) - 40, this.botSize, this.botSize) //! draw debug stroke for bot
+    /* ---------------------------------- DEBUG --------------------------------- */
+    ctx.restore() //restore context to last saved context (default context)
+  
+  }
+  draw() {
+    ctx.save() //save default context (where ctx x and y = 0, not translated)
+    ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
+    ctx.rotate(this.botRotation * Math.PI / 180) //rotate bot according to bot number
+    ctx.scale(this.botDirection === "positive" ? 1 : -1, 1)
+    ctx.drawImage(this.botSprite, -this.x, -this.y - (this.jupiterSize / 2) - 40, this.botSize, this.botSize)
+    ctx.restore() //restore context to last saved context (default context)
+  }
+  update() {
+    // set alive to false if lives = 0 (dead)
+    if (this.lives === 0) this.isAlive = false
+
+    //check if ball hit bot
+    if (this.game.ballScene.ballRotationAngle === this.botRotation) {
+      if (this.crouch) return;
+      console.log(`BotScene-${this.botNumber}.HIT`);
+      this.lives -= 1
+      this.botSprite = this.botSpriteCaught
+      this.hitting = true
+      setTimeout(() => { this.botSprite = this.botSpriteDefault; this.hitting = false }, 700)
+    }
+
+    //do crouch for bot
+    if (this.crouch) {
+      if (!this.uncrouch) this.y -= 3
+      if (this.y <= -this.botSize) this.uncrouch = true
+    }
+    if (this.uncrouch) {
+      this.y += 3
+      if (this.y > (this.botSize / 2)) {
+        this.y -= this.y - (this.botSize / 2);
+        this.crouch = false; this.uncrouch = false
+      }
+    }
+
+    //assign new queue when after bot do action
+    if (this.botNextMoveQueue.length < 2) {
+      this.botNextMoveQueue.push(this.botChance[Math.floor(Math.random() * this.botChance.length)])
+    }
+
+    //! NEED REFACTOR
+    /* --------------------------- BOT FUNCTIONALITIES -------------------------- */
+    //check if in range clockwise direction
+    if (this.game.ballScene.ballRotationAngle > this.botRotation - this.range && this.game.ballScene.ballRotationAngle < this.botRotation) {
+      if (this.game.ballScene.direction === "positive") {
+        if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
+          this.botSprite = this.botSpriteHit;
+          setTimeout(() => this.botSprite = this.botSpriteDefault, 700)
+          this.botDirection = "positive";
+          this.game.ballScene.direction = "negative";
+        }
+        if (this.botNextMoveQueue[0] === "crouch") {
+          this.crouch = true;
+        }
+        setTimeout(() => this.botNextMoveQueue.shift(), 500) //delay to prevent 
+      }
+    }
+
+    //check if in range counter-clockwise direction
+    if (this.game.ballScene.ballRotationAngle < this.botRotation + this.range && this.game.ballScene.ballRotationAngle > this.botRotation) {
+      if (this.game.ballScene.direction === "negative") {
+        if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
+          this.botSprite = this.botSpriteHit;
+          setTimeout(() => this.botSprite = this.botSpriteDefault, 700)
+          this.botDirection = "negative";
+          this.game.ballScene.direction = "positive";
+        }
+        if (this.botNextMoveQueue[0] === "crouch") {
+          this.crouch = true;
+        }
+        setTimeout(() => this.botNextMoveQueue.shift(), 500) //delay to prevent 
+      }
+    }
+    /* --------------------------- BOT FUNCTIONALITIES -------------------------- */
   }
 }
