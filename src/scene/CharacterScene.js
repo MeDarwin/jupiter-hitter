@@ -11,10 +11,10 @@ export class PlayerScene {
     this.inRange = false;
     this.crouch = false;
     this.uncrouch = false;
-    this.crouchDelay = false; //TODO: crouch delay
+    this.crouchDelay = false;
     this.jupiterSize = this.game.backgroundScene.jupiterSize; //destructure
     this.playerDirection = this.game.ballScene.direction;
-    this.crouchTime = 3000; // ms
+    this.crouchTime = 6000; // ms
     this.playerSize = 100;
     this.warnWidth = 300;
     this.lives = 3;
@@ -34,7 +34,7 @@ export class PlayerScene {
     /* ------------------------------- CONTROLLER ------------------------------- */
     window.addEventListener("keydown", ({ key }) => {
       if (!this.isAlive) return;
-      if (this.crouch) return;
+      if (this.crouch || this.uncrouch) return;
       if (this.hitting) return;
       if (this.game.gameStatus !== "GAME") return;
       switch (key) {
@@ -82,7 +82,7 @@ export class PlayerScene {
     ctx.restore(); //restore context to last saved context (default context)
     if (this.crouchDelay) {
       ctx.fillStyle = "orange";
-      ctx.fillRect(canvas.clientWidth / 2 - this.warnWidth / 2, 20, this.warnWidth, 10);
+      ctx.fillRect(canvas.clientWidth / 2 - this.warnWidth / 2, canvas.clientHeight - 20, this.warnWidth, 10);
     }
   }
   update() {
@@ -132,10 +132,11 @@ export class PlayerScene {
   }
   dispatchDelay() {
     this.crouchDelay = true;
+    this.warnWidth = this.crouchTime / 10
     const decreaser = setInterval(() => (this.warnWidth -= 1), 10);
     setTimeout(() => {
       this.crouchDelay = false;
-      this.warnWidth = 300
+      this.warnWidth = this.crouchTime / 10
       clearInterval(decreaser);
     }, this.crouchTime);
   }
@@ -245,7 +246,7 @@ export class BotScene {
         if (this.botNextMoveQueue[0] === "crouch") {
           this.crouch = true;
         }
-        setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent
+        setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent too quick next move action
       }
     }
 
@@ -261,7 +262,7 @@ export class BotScene {
         if (this.botNextMoveQueue[0] === "crouch") {
           this.crouch = true;
         }
-        setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent
+        setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent too quick next move action
       }
     }
     /* --------------------------- BOT FUNCTIONALITIES -------------------------- */

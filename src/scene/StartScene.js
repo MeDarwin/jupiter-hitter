@@ -1,15 +1,16 @@
-import { canvas, ctx } from "../main";
 import { BackgroundScene } from "./BackgroundScene";
 import { BallScene } from "./BallScene";
 import { BotScene, PlayerScene } from "./CharacterScene";
 
-let startScene;
+const /** @type {HTMLCanvasElement} */ canvas = document.getElementById("cvs");
+const /** @type {CanvasRenderingContext2D} */ ctx = canvas.getContext("2d");
 
 export class StartScene {
   constructor() {
     console.log("StartScene.INIT");
     /** @type {"COUNTDOWN"|"GAME"|"GAMEOVER"|"PAUSE"|"WIN"|"UNINITIALIZED"}*/
     this.gameStatus = "UNINITIALIZED";
+    /** @type {"DEV"|"READY"}*/ this.staging = "READY";
     this.assignNumber = [];
     this.countdown = 3;
     this.fontSize = 180;
@@ -31,7 +32,6 @@ export class StartScene {
       }
       this.assignNumber.push(randomNumber);
     }
-    /** @type {"DEV"|"READY"}*/ this.staging = "READY";
     /* --------------------------------- BG GRAD -------------------------------- */
     this.blueColor = "rgba(5, 2, 55, 1)";
     this.purpleColor = "rgba(67, 11, 76, 1)";
@@ -103,6 +103,6 @@ export class StartScene {
   }
 }
 
-startScene = new StartScene(); //INIT SCENE
+const startScene = new StartScene(); //INIT SCENE
 
 export { startScene };
