@@ -1,4 +1,5 @@
 import { startScene } from './scene/StartScene'
+
 const menu = document.querySelector("div.menu")
 const /** @type {HTMLButtonElement} */ btnPlay = document.getElementById("btnPlay")
 const /** @type {HTMLCanvasElement} */ canvas = document.getElementById("cvs");
