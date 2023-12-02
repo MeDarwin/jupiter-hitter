@@ -115,6 +115,7 @@ main {
   height: 600px;
   display: grid;
   grid-template-columns: 1fr;
+  position: relative;
 }
 
 .status>h1 {

@@ -52,6 +52,7 @@ btnPlay.onclick = () => {
   menu.remove()
   startScene.gameStatus = "COUNTDOWN"
   startScene.startCountdown()
+  startScene.backgroundScene.bgMusic.play()
   /* ------------------------------ PLAYER STATUS ----------------------------- */
   playerStatus.classList.add(CLASS_IDENTIFIER[startScene.playerScene.playerNumber - 1]);
   const playerText = headerGenerator()
@@ -80,6 +81,6 @@ btnPlay.onclick = () => {
   bot3Status.prepend(bot3Text)
   /* ------------------------------ BOT 3 STATUS ------------------------------ */
 };
-startAnimate(120); //
+startAnimate(120); //init animate with fps given as parameter
 
 export { ctx, canvas };

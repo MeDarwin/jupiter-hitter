@@ -46,7 +46,7 @@ export class PlayerScene {
           setTimeout(() => {
             this.playerSprite = this.playerSpriteDefault;
             this.hitting = false;
-          }, 700);
+          }, 200);
           this.playerDirection = this.game.ballScene.direction;
 
           if (!this.inRange) return;
@@ -101,7 +101,7 @@ export class PlayerScene {
       setTimeout(() => {
         this.playerSprite = this.playerSpriteDefault;
         this.hitting = false;
-      }, 700);
+      }, 200);
       this.lives === 0 && playerStatus.children[2].classList.remove("hidden");
       playerStatus.children[1].firstElementChild.remove()
     }
@@ -214,7 +214,7 @@ export class BotScene {
       setTimeout(() => {
         this.botSprite = this.botSpriteDefault;
         this.hitting = false;
-      }, 700);
+      }, 200);
       this.lives === 0 && document.getElementsByClassName(CLASS_IDENTIFIER[this.botNumber - 1])[0].children[2].classList.remove("hidden");
       document.getElementsByClassName(CLASS_IDENTIFIER[this.botNumber - 1])[0].children[1].firstElementChild.remove()
     }
@@ -245,7 +245,7 @@ export class BotScene {
       if (this.game.ballScene.direction === "positive") {
         if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
           this.botSprite = this.botSpriteHit;
-          setTimeout(() => (this.botSprite = this.botSpriteDefault), 700);
+          setTimeout(() => (this.botSprite = this.botSpriteDefault), 200);
           this.botDirection = "positive";
           this.game.ballScene.direction = "negative";
         }
@@ -261,7 +261,7 @@ export class BotScene {
       if (this.game.ballScene.direction === "negative") {
         if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
           this.botSprite = this.botSpriteHit;
-          setTimeout(() => (this.botSprite = this.botSpriteDefault), 700);
+          setTimeout(() => (this.botSprite = this.botSpriteDefault), 200);
           this.botDirection = "negative";
           this.game.ballScene.direction = "positive";
         }

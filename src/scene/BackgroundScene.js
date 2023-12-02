@@ -7,10 +7,13 @@ export class BackgroundScene {
         console.log("BackgroundScene.INIT");
         this.jupiterSize = 390
         this.jupiterRotationAngle = 0
-        /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+        /* ------------------------------ ASSETS PRELOAD ----------------------------- */
         this.jupiterPng = new Image();
         this.jupiterPng.src = "../../assets/img/jupiter.png";
-        /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+        this.bgMusic = new Audio();
+        this.bgMusic.src = "../../assets/audio/bg.mp3";
+        this.bgMusic.loop = true
+        /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     }
     debug() {
         ctx.save() //save default context (where ctx x and y = 0, not translated)

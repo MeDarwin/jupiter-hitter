@@ -11,6 +11,7 @@ export class StartScene {
     /** @type {"COUNTDOWN"|"GAME"|"GAMEOVER"|"PAUSE"|"WIN"|"UNINITIALIZED"}*/
     this.gameStatus = "UNINITIALIZED";
     /** @type {"DEV"|"READY"}*/ this.staging = "READY";
+    this.isMute = false;
     this.assignNumber = [];
     this.countdown = 3;
     this.fontSize = 180;
