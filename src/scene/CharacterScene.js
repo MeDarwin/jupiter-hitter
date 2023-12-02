@@ -1,5 +1,7 @@
-import { canvas, ctx } from "../main";
+import { CLASS_IDENTIFIER, canvas, ctx } from "../main";
 import { StartScene } from "./StartScene";
+
+const playerStatus = document.getElementById("player-status")
 
 export class PlayerScene {
   constructor(/** @type {StartScene} */ game, playerNumber) {
@@ -100,6 +102,8 @@ export class PlayerScene {
         this.playerSprite = this.playerSpriteDefault;
         this.hitting = false;
       }, 700);
+      this.lives === 0 && playerStatus.children[2].classList.remove("hidden");
+      playerStatus.children[1].firstElementChild.remove()
     }
 
     //check if ball in range positive
@@ -211,6 +215,8 @@ export class BotScene {
         this.botSprite = this.botSpriteDefault;
         this.hitting = false;
       }, 700);
+      this.lives === 0 && document.getElementsByClassName(CLASS_IDENTIFIER[this.botNumber - 1])[0].children[2].classList.remove("hidden");
+      document.getElementsByClassName(CLASS_IDENTIFIER[this.botNumber - 1])[0].children[1].firstElementChild.remove()
     }
 
     //do crouch for bot

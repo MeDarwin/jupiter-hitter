@@ -15,16 +15,18 @@ export class StartScene {
     this.countdown = 3;
     this.fontSize = 180;
     this.randNumGenerate = () => Math.floor(Math.random() * 4 + 1);
-    this.startCountdown = () =>
-      setInterval(() => {
+    this.startCountdown = () => {
+      const countdown = setInterval(() => {
         if (this.countdown === 0) {
           this.gameStatus = "GAME";
+          clearInterval(countdown); //cleanup
         }
         if (this.gameStatus === "COUNTDOWN") {
           this.countdown -= 1;
           this.fontSize = 180;
         }
-      }, 1000);
+      }, 1000)
+    };
     for (let i = 1; i <= 4; i++) {
       let randomNumber = this.randNumGenerate();
       while (this.assignNumber.includes(randomNumber)) {

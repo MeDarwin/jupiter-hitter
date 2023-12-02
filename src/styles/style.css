@@ -89,7 +89,7 @@ button {
 }
 
 .leaderboard {
-  
+
   margin-top: auto;
   margin-bottom: 1.25rem;
 }
@@ -102,6 +102,10 @@ canvas {
   grid-column: 1;
 }
 
+.dead {
+  color: red;
+}
+
 .hidden {
   display: none;
 }
@@ -111,4 +115,58 @@ main {
   height: 600px;
   display: grid;
   grid-template-columns: 1fr;
+}
+
+.status>h1 {
+  z-index: 2;
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.status::before {
+  content: '';
+  width: 100%;
+  height: 35%;
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  background-color: #f5bf41;
+}
+
+.status img {
+  width: 50px;
+  height: 50px;
+}
+
+.status {
+  color: whitesmoke;
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  width: 12rem;
+  height: 6.25rem;
+  background-color: whitesmoke;
+}
+
+.one {
+  right: 3.125rem;
+  top: 3.125rem;
+}
+
+.two {
+  right: 3.125rem;
+  bottom: 3.125rem;
+}
+
+.three {
+  left: 3.125rem;
+  bottom: 3.125rem;
+}
+
+.four {
+  left: 3.125rem;
+  top: 3.125rem;
 }
