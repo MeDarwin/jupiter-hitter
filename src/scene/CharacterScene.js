@@ -3,6 +3,20 @@ import { StartScene } from "./StartScene";
 
 const playerStatus = document.getElementById("player-status")
 
+const sfxDodge = new Audio();
+const sfxDied = new Audio();
+const sfxHit1 = new Audio();
+const sfxHit2 = new Audio();
+const sfxCaught = new Audio();
+sfxCaught.volume = 0.5; // THE SFX IS SO LOUD NGL
+sfxCaught.src = "../../assets/audio/caught.wav";
+sfxDied.volume = 0.5; // THE SFX IS SO LOUD NGL
+sfxDied.src = "../../assets/audio/destroy.wav";
+sfxDodge.src = "../../assets/audio/dodge.wav";
+sfxHit1.src = "../../assets/audio/hit-0.wav";
+sfxHit2.src = "../../assets/audio/hit-1.wav";
+const sfxHit = [sfxHit1, sfxHit2];
+
 export class PlayerScene {
   constructor(/** @type {StartScene} */ game, playerNumber) {
     this.game = game;
@@ -16,7 +30,7 @@ export class PlayerScene {
     this.crouchDelay = false;
     this.jupiterSize = this.game.backgroundScene.jupiterSize; //destructure
     this.playerDirection = this.game.ballScene.direction;
-    this.crouchTime = 6000; // ms
+    this.crouchTime = 3000; // ms
     this.playerSize = 100;
     this.warnWidth = 300;
     this.lives = 3;
@@ -24,14 +38,14 @@ export class PlayerScene {
     this.x = this.playerSize / 2; //place to center x
     this.y = this.playerSize / 2; //place to center y
     this.playerRotation = this.playerNumber * 90 - 45; //rotate player according to player number (on degree scale)
-    /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+    /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     this.playerSpriteDefault = new Image();
     this.playerSpriteCaught = new Image();
     this.playerSpriteHit = new Image();
     this.playerSpriteDefault.src = "../../assets/img/player.png";
     this.playerSpriteCaught.src = "../../assets/img/bot0-caught.png";
     this.playerSpriteHit.src = "../../assets/img/bot0-hit.png";
-    /* ------------------------------ IMAGE PRELOAD ----------------------------- */
+    /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     this.playerSprite = this.playerSpriteDefault;
     /* ------------------------------- CONTROLLER ------------------------------- */
     window.addEventListener("keydown", ({ key }) => {
@@ -46,8 +60,11 @@ export class PlayerScene {
           setTimeout(() => {
             this.playerSprite = this.playerSpriteDefault;
             this.hitting = false;
-          }, 200);
+          }, 700);
           this.playerDirection = this.game.ballScene.direction;
+          let random = Math.floor(Math.random() * 2);
+          sfxHit[random].currentTime = 0;
+          sfxHit[random].play();
 
           if (!this.inRange) return;
           this.game.ballScene.direction = this.game.ballScene.direction = this.game.ballScene.direction === "positive" ? "negative" : "positive";
@@ -55,6 +72,8 @@ export class PlayerScene {
         case "ArrowDown":
           if (this.crouchDelay) return;
           this.crouch = true;
+          sfxDodge.currentTime = 0
+          sfxDodge.play();
           this.dispatchDelay();
           break;
       }
@@ -89,12 +108,19 @@ export class PlayerScene {
   }
   update() {
     // set alive to false if lives = 0 (dead)
-    if (this.lives === 0) this.isAlive = false;
+    if (this.lives === 0) {
+      this.game.gameStatus = "GAMEOVER"
+      this.isAlive = false
+      this.game.backgroundScene.bgMusic.pause()
+      sfxDied.play()
+    }
 
     //check if ball hit player
     if (this.game.ballScene.ballRotationAngle === this.playerRotation) {
       if (this.crouch || this.uncrouch) return;
       console.log("PlayerScene.HIT");
+      sfxCaught.currentTime = 0
+      sfxCaught.play()
       this.lives -= 1;
       this.playerSprite = this.playerSpriteCaught;
       this.hitting = true;
@@ -208,6 +234,8 @@ export class BotScene {
     if (this.game.ballScene.ballRotationAngle === this.botRotation) {
       if (this.crouch) return;
       console.log(`BotScene-${this.botNumber}.HIT`);
+      sfxCaught.currentTime = 0
+      sfxCaught.play();
       this.lives -= 1;
       this.botSprite = this.botSpriteCaught;
       this.hitting = true;
@@ -245,12 +273,17 @@ export class BotScene {
       if (this.game.ballScene.direction === "positive") {
         if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
           this.botSprite = this.botSpriteHit;
-          setTimeout(() => (this.botSprite = this.botSpriteDefault), 200);
+          setTimeout(() => (this.botSprite = this.botSpriteDefault), 700);
           this.botDirection = "positive";
           this.game.ballScene.direction = "negative";
+          let random = Math.floor(Math.random() * 2);
+          sfxHit[random].currentTime = 0;
+          sfxHit[random].play();
         }
         if (this.botNextMoveQueue[0] === "crouch") {
           this.crouch = true;
+          sfxDodge.currentTime = 0
+          sfxDodge.play();
         }
         setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent too quick next move action
       }
@@ -261,12 +294,17 @@ export class BotScene {
       if (this.game.ballScene.direction === "negative") {
         if (this.botNextMoveQueue[0] === "hit" && !this.crouch) {
           this.botSprite = this.botSpriteHit;
-          setTimeout(() => (this.botSprite = this.botSpriteDefault), 200);
+          setTimeout(() => (this.botSprite = this.botSpriteDefault), 700);
           this.botDirection = "negative";
           this.game.ballScene.direction = "positive";
+          let random = Math.floor(Math.random() * 2);
+          sfxHit[random].currentTime = 0;
+          sfxHit[random].play();
         }
         if (this.botNextMoveQueue[0] === "crouch") {
           this.crouch = true;
+          sfxDodge.currentTime = 0
+          sfxDodge.play();
         }
         setTimeout(() => this.botNextMoveQueue.shift(), 500); //delay to prevent too quick next move action
       }

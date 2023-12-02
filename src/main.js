@@ -48,6 +48,9 @@ const startAnimate = (fps = 1) => {
 
 export const CLASS_IDENTIFIER = ["one", "two", "three", "four"];
 const headerGenerator = () => document.createElement("h1")
+
+let /** @type {string|undefined} */ playerName
+document.getElementById("player-name").onchange = (({ target: { value } }) => playerName = value)
 btnPlay.onclick = () => {
   menu.remove()
   startScene.gameStatus = "COUNTDOWN"
@@ -56,7 +59,7 @@ btnPlay.onclick = () => {
   /* ------------------------------ PLAYER STATUS ----------------------------- */
   playerStatus.classList.add(CLASS_IDENTIFIER[startScene.playerScene.playerNumber - 1]);
   const playerText = headerGenerator()
-  playerText.innerText = "PLAYER"
+  playerText.innerText = playerName?.slice(0, 12) ?? "PLAYER"
   playerStatus.prepend(playerText)
   /* ------------------------------ PLAYER STATUS ----------------------------- */
 
