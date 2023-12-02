@@ -3,6 +3,7 @@ import { StartScene } from "./StartScene";
 
 const playerStatus = document.getElementById("player-status")
 
+/* ------------------------------- AUDIO LOAD ------------------------------- */
 const sfxDodge = new Audio();
 const sfxDied = new Audio();
 const sfxHit1 = new Audio();
@@ -16,6 +17,7 @@ sfxDodge.src = "../../assets/audio/dodge.wav";
 sfxHit1.src = "../../assets/audio/hit-0.wav";
 sfxHit2.src = "../../assets/audio/hit-1.wav";
 const sfxHit = [sfxHit1, sfxHit2];
+/* ------------------------------- AUDIO LOAD ------------------------------- */
 
 export class PlayerScene {
   constructor(/** @type {StartScene} */ game, playerNumber) {
@@ -29,7 +31,7 @@ export class PlayerScene {
     this.uncrouch = false;
     this.crouchDelay = false;
     this.jupiterSize = this.game.backgroundScene.jupiterSize; //destructure
-    this.playerDirection = this.game.ballScene.direction;
+    this.playerDirection = this.game.ballScene.direction; //init direction according to ball
     this.crouchTime = 3000; // ms
     this.playerSize = 100;
     this.warnWidth = 300;
@@ -49,10 +51,10 @@ export class PlayerScene {
     this.playerSprite = this.playerSpriteDefault;
     /* ------------------------------- CONTROLLER ------------------------------- */
     window.addEventListener("keydown", ({ key }) => {
-      if (!this.isAlive) return;
-      if (this.crouch || this.uncrouch) return;
-      if (this.hitting) return;
-      if (this.game.gameStatus !== "GAME") return;
+      if (!this.isAlive) return; //if dead, do nothing
+      if (this.crouch || this.uncrouch) return; // if crouching / uncrouching (dodging), do nothing
+      if (this.hitting) return; // if currently hitting the ball (swinging bat), do nothing
+      if (this.game.gameStatus !== "GAME") return; //dont do anything if game not started
       switch (key) {
         case " ":
           this.hitting = true;
@@ -66,11 +68,11 @@ export class PlayerScene {
           sfxHit[random].currentTime = 0;
           sfxHit[random].play();
 
-          if (!this.inRange) return;
+          if (!this.inRange) return; //if not in hitting range, don't hit the ball
           this.game.ballScene.direction = this.game.ballScene.direction = this.game.ballScene.direction === "positive" ? "negative" : "positive";
           break;
         case "ArrowDown":
-          if (this.crouchDelay) return;
+          if (this.crouchDelay) return; //if crouch state is in delay, do nothing
           this.crouch = true;
           sfxDodge.currentTime = 0
           sfxDodge.play();
@@ -79,20 +81,6 @@ export class PlayerScene {
       }
     });
     /* ------------------------------- CONTROLLER ------------------------------- */
-  }
-  debug() {
-    ctx.save(); //save default context (where ctx x and y = 0, not translated)
-    ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2); //translate to center
-    ctx.rotate((this.playerRotation * Math.PI) / 180); //rotate player according to player number
-    ctx.scale(this.playerDirection === "positive" ? 1 : -1, 1);
-    /* ---------------------------------- DEBUG --------------------------------- */
-    ctx.strokeStyle = "yellow"; //! debug player range
-    ctx.strokeRect(this.x - this.playerSize - this.range, -this.y - this.jupiterSize / 2 - 40, this.range, this.playerSize); //! draw debug stroke for area
-    ctx.strokeRect(this.x, -this.y - this.jupiterSize / 2 - 40, this.range, this.playerSize); //! draw debug stroke for area
-    ctx.strokeStyle = "blue"; //! debug player size
-    ctx.strokeRect(-this.x, -this.y - this.jupiterSize / 2 - 40, this.playerSize, this.playerSize); //! draw debug stroke for player
-    /* ---------------------------------- DEBUG --------------------------------- */
-    ctx.restore(); //restore context to last saved context (default context)
   }
   draw() {
     ctx.save(); //save default context (where ctx x and y = 0, not translated)
@@ -204,20 +192,7 @@ export class BotScene {
     this.botSprite = this.botSpriteDefault;
   }
 
-  debug() {
-    ctx.save(); //save default context (where ctx x and y = 0, not translated)
-    ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2); //translate to center
-    ctx.rotate((this.botRotation * Math.PI) / 180); //rotate bot according to bot number
-    ctx.scale(this.botDirection === "positive" ? 1 : -1, 1);
-    /* ---------------------------------- DEBUG --------------------------------- */
-    ctx.strokeStyle = "yellow"; //! debug bot range
-    ctx.strokeRect(this.x - this.botSize - this.range, -this.y - this.jupiterSize / 2 - 40, this.range, this.botSize); //! draw debug stroke for area
-    ctx.strokeRect(this.x, -this.y - this.jupiterSize / 2 - 40, this.range, this.botSize); //! draw debug stroke for area
-    ctx.strokeStyle = "blue"; //! debug bot size
-    ctx.strokeRect(-this.x, -this.y - this.jupiterSize / 2 - 40, this.botSize, this.botSize); //! draw debug stroke for bot
-    /* ---------------------------------- DEBUG --------------------------------- */
-    ctx.restore(); //restore context to last saved context (default context)
-  }
+
   draw() {
     ctx.save(); //save default context (where ctx x and y = 0, not translated)
     ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2); //translate to center

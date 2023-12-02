@@ -10,7 +10,6 @@ export class StartScene {
     console.log("StartScene.INIT");
     /** @type {"COUNTDOWN"|"GAME"|"GAMEOVER"|"PAUSE"|"WIN"|"UNINITIALIZED"}*/
     this.gameStatus = "UNINITIALIZED";
-    /** @type {"DEV"|"READY"}*/ this.staging = "READY";
     this.isMute = false;
     this.assignNumber = [];
     this.countdown = 3;
@@ -69,26 +68,6 @@ export class StartScene {
       ctx.textBaseline = "middle";
       ctx.fillStyle = "white";
       ctx.fillText(this.countdown, canvas.clientWidth / 2, canvas.clientHeight / 2);
-    }
-    //DEBUG MODE
-    if (this.staging === "DEV") {
-      this.playerScene.isAlive && this.playerScene.debug();
-      this.bot1.isAlive && this.bot1.debug();
-      this.bot2.isAlive && this.bot2.debug();
-      this.bot3.isAlive && this.bot3.debug();
-      this.backgroundScene.debug();
-      this.ballScene.debug();
-      /* ------------------------------- CENTER AXIS ------------------------------- */
-      ctx.beginPath();
-      ctx.strokeStyle = "green";
-      ctx.lineTo(canvas.clientWidth / 2, 0);
-      ctx.lineTo(canvas.clientWidth / 2, canvas.clientHeight);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.lineTo(0, canvas.clientHeight / 2);
-      ctx.lineTo(canvas.clientWidth, canvas.clientHeight / 2);
-      ctx.stroke();
-      /* ------------------------------- CENTER AXIS ------------------------------- */
     }
   }
   /**

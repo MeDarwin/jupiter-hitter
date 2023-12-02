@@ -14,16 +14,6 @@ export class BallScene {
         this.ball.src = "../../assets/img/ball.png"
         /* ------------------------------ BALL PRELOAD ------------------------------ */
     }
-    debug() {
-        ctx.save() //save deafult context (where ctx x and y = 0, not translated)
-        ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
-        ctx.rotate((this.ballRotationAngle * Math.PI) / 180) // rotate ball according to rotation angle and convert to radian
-        /* ---------------------------------- DEBUG --------------------------------- */
-        ctx.strokeStyle = "red" //! debug ball size
-        ctx.strokeRect(-this.ballSize / 2, -(this.game.backgroundScene.jupiterSize / 2) - 80, this.ballSize, this.ballSize) //! draw debug stroke
-        /* ---------------------------------- DEBUG --------------------------------- */
-        ctx.restore() //restore to deafult context
-    }
     draw() {
         ctx.save() //save deafult context (where ctx x and y = 0, not translated)
         ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center

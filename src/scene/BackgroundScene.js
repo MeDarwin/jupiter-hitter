@@ -15,16 +15,6 @@ export class BackgroundScene {
         this.bgMusic.loop = true
         /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     }
-    debug() {
-        ctx.save() //save default context (where ctx x and y = 0, not translated)
-        ctx.translate((canvas.clientWidth / 2), (canvas.clientHeight / 2)) //translate to center
-        ctx.rotate((this.jupiterRotationAngle * Math.PI) / 180) //rotate jupiter according to jupiter rotation angle
-        /* ---------------------------------- DEBUG --------------------------------- */
-        ctx.strokeStyle = "red" //! debug jupiter size
-        ctx.strokeRect(-this.jupiterSize / 2, -this.jupiterSize / 2, this.jupiterSize, this.jupiterSize) //! draw debug stroke
-        /* ---------------------------------- DEBUG --------------------------------- */
-        ctx.restore() //restore context to last saved context (default context)
-    }
     draw() {
         ctx.save() //save default context (where ctx x and y = 0, not translated)
         ctx.translate((canvas.clientWidth / 2), (canvas.clientHeight / 2)) //translate to center

@@ -17,7 +17,7 @@ const ONE_SECOND_IN_MS = 1000; // 1 second in ms
  * @return {void} This function does not return any value.
  */
 const animate = () => {
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animate); //request loop animation
   now = Date.now(); //get current timestamp
   elapsed = now - then; //get elapsed time since last frame
 
@@ -40,14 +40,20 @@ const animate = () => {
  * @return {void} This function does not return a value.
  */
 const startAnimate = (fps = 1) => {
-  fpsInterval = ONE_SECOND_IN_MS / fps;
+  fpsInterval = ONE_SECOND_IN_MS / fps; //get how much time should elapse between each frame
   initTime = then = Date.now();
-  animate();
+  animate(); //call the animate func to start the game
   console.log(`Game has started, TIMESTAMP: ${initTime}`);
 };
 
-export const CLASS_IDENTIFIER = ["one", "two", "three", "four"];
-const headerGenerator = () => document.createElement("h1")
+export const CLASS_IDENTIFIER = ["one", "two", "three", "four"]; //dynamic class identifier
+
+/** func to createElement h1
+ * @return {HTMLHeadingElement} 
+ * */
+const headerGenerator = (text) => {
+  const h1 = document.createElement("h1"); h1.innerText = text; return h1
+}
 
 let /** @type {string|undefined} */ playerName
 document.getElementById("player-name").onchange = (({ target: { value } }) => playerName = value)
@@ -58,30 +64,22 @@ btnPlay.onclick = () => {
   startScene.backgroundScene.bgMusic.play()
   /* ------------------------------ PLAYER STATUS ----------------------------- */
   playerStatus.classList.add(CLASS_IDENTIFIER[startScene.playerScene.playerNumber - 1]);
-  const playerText = headerGenerator()
-  playerText.innerText = playerName?.slice(0, 12) ?? "PLAYER"
-  playerStatus.prepend(playerText)
+  playerStatus.prepend(headerGenerator(playerName?.slice(0, 12) ?? "PLAYER"))
   /* ------------------------------ PLAYER STATUS ----------------------------- */
 
   /* ------------------------------ BOT 1 STATUS ------------------------------ */
   bot1Status.classList.add(CLASS_IDENTIFIER[startScene.bot1.botNumber - 1]);
-  const bot1Text = headerGenerator()
-  bot1Text.innerText = "BOT 1"
-  bot1Status.prepend(bot1Text)
+  bot1Status.prepend(headerGenerator("BOT 1"))
   /* ------------------------------ BOT 1 STATUS ------------------------------ */
 
   /* ------------------------------ BOT 2 STATUS ------------------------------ */
   bot2Status.classList.add(CLASS_IDENTIFIER[startScene.bot2.botNumber - 1]);
-  const bot2Text = headerGenerator()
-  bot2Text.innerText = "BOT 2"
-  bot2Status.prepend(bot2Text)
+  bot2Status.prepend(headerGenerator("BOT 2"))
   /* ------------------------------ BOT 2 STATUS ------------------------------ */
 
   /* ------------------------------ BOT 3 STATUS ------------------------------ */
   bot3Status.classList.add(CLASS_IDENTIFIER[startScene.bot3.botNumber - 1]);
-  const bot3Text = headerGenerator()
-  bot3Text.innerText = "BOT 3"
-  bot3Status.prepend(bot3Text)
+  bot3Status.prepend(headerGenerator("BOT 3"))
   /* ------------------------------ BOT 3 STATUS ------------------------------ */
 };
 startAnimate(120); //init animate with fps given as parameter
