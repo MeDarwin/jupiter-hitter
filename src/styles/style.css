@@ -79,6 +79,33 @@ button {
   padding: 1rem 1.25rem;
 }
 
+#pause,
+#mute,
+#exit {
+  padding: .5rem;
+  font-size: small;
+}
+
+#exit{
+  position: absolute;
+  translate: 50% -50%;
+  top: 50%;
+  left: 0;
+}
+#pause {
+  position: absolute;
+  translate: -50% -50%;
+  top: 50%;
+  right: 0;
+}
+
+#mute {
+  position: absolute;
+  translate: -50% 0;
+  top: 85%;
+  left: 50%;
+}
+
 .leaderboard>h2 {
   font-weight: normal;
   color: whitesmoke;

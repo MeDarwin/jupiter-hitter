@@ -56,12 +56,23 @@ const headerGenerator = (text) => {
 }
 
 let /** @type {string|undefined} */ playerName
+
+document.getElementById("exit").onclick = () => window.close()
+document.getElementById("pause").onclick = ({ target }) => {
+  if (startScene.gameStatus === "GAME" || startScene.gameStatus === "PAUSE")
+    startScene.gameStatus = startScene.gameStatus === "PAUSE" ? "GAME" : "PAUSE";
+  target.blur()
+}
+document.getElementById("mute").onclick = ({ target }) => {
+  startScene.isMute = !startScene.isMute
+    ; target.blur()
+}
 document.getElementById("player-name").onchange = (({ target: { value } }) => playerName = value)
+
 btnPlay.onclick = () => {
   menu.remove()
   startScene.gameStatus = "COUNTDOWN"
   startScene.startCountdown()
-  startScene.backgroundScene.bgMusic.play()
   /* ------------------------------ PLAYER STATUS ----------------------------- */
   playerStatus.classList.add(CLASS_IDENTIFIER[startScene.playerScene.playerNumber - 1]);
   playerStatus.prepend(headerGenerator(playerName?.slice(0, 12) ?? "PLAYER"))

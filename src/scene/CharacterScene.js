@@ -134,14 +134,14 @@ export class PlayerScene {
 
     //crouch for player
     if (this.crouch) {
-      this.y -= 3;
+      this.y -= 5;
       if (this.y <= -this.playerSize) {
         this.uncrouch = true;
         this.crouch = false;
       }
     }
     if (this.uncrouch) {
-      this.y += 3;
+      this.y += 5;
       if (this.y > this.playerSize / 2) {
         this.y -= this.y - this.playerSize / 2; //tolerate miscalculation
         this.uncrouch = false;
@@ -202,6 +202,10 @@ export class BotScene {
     ctx.restore(); //restore context to last saved context (default context)
   }
   update() {
+    //mute sfx
+    sfxCaught.muted = sfxHit1.muted = sfxHit2.muted = sfxDodge.muted = sfxDied.muted =
+      this.game.isMute ? true : false;
+
     // set alive to false if lives = 0 (dead)
     if (this.lives === 0) this.isAlive = false;
 
@@ -224,11 +228,11 @@ export class BotScene {
 
     //do crouch for bot
     if (this.crouch) {
-      if (!this.uncrouch) this.y -= 3;
+      if (!this.uncrouch) this.y -= 5;
       if (this.y <= -this.botSize) this.uncrouch = true;
     }
     if (this.uncrouch) {
-      this.y += 3;
+      this.y += 5;
       if (this.y > this.botSize / 2) {
         this.y -= this.y - this.botSize / 2;
         this.crouch = false;

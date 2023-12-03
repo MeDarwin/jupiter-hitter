@@ -8,7 +8,7 @@ export class BallScene {
         this.ballRotationAngle = 0; //rotation ball (on degree scale)
         this.direction = "positive" //direction of rotation (positive = clockwise, negative = counter-clockwise)
         this.ballSize = 40
-        this.speed = 1
+        this.speed = 2.5
         /* ------------------------------ BALL PRELOAD ------------------------------ */
         this.ball = new Image()
         this.ball.src = "../../assets/img/ball.png"
