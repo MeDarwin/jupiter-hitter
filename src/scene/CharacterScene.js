@@ -99,7 +99,6 @@ export class PlayerScene {
     if (this.lives === 0) {
       this.game.gameStatus = "GAMEOVER"
       this.isAlive = false
-      this.game.backgroundScene.bgMusic.pause()
       sfxDied.play()
     }
 

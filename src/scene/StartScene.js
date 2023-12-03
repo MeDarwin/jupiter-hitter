@@ -75,6 +75,9 @@ export class StartScene {
    * @return {void} This function does not return any value.
    */
   update() {
+    if (this.gameStatus === "UNINITIALIZED") return;
+    this.isMute && this.backgroundScene.bgMusic.pause()
+    !this.isMute && this.backgroundScene.bgMusic.play()
     if (this.gameStatus !== "GAME") return; //stop if not on game
     this.backgroundScene.update();
     this.ballScene.update();

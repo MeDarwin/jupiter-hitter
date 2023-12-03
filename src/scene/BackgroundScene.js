@@ -27,8 +27,6 @@ export class BackgroundScene {
         ctx.restore() //restore context to last saved context (default context)
     }
     update() {
-        this.game.isMute && this.bgMusic.pause()
-        !this.game.isMute && this.bgMusic.play()
         this.jupiterRotationAngle === 360 && (this.jupiterRotationAngle = 0) //reset rotation after 360deg spin
         this.jupiterRotationAngle += .1 //rotate jupiter
     }
