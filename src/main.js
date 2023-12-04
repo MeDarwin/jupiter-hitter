@@ -73,6 +73,7 @@ btnPlay.onclick = () => {
   menu.remove()
   startScene.gameStatus = "COUNTDOWN"
   startScene.startCountdown()
+  setTimeout(() => startScene.timerScene.startTimer(), 3000) // start counting after countdown
   /* ------------------------------ PLAYER STATUS ----------------------------- */
   playerStatus.classList.add(CLASS_IDENTIFIER[startScene.playerScene.playerNumber - 1]);
   playerStatus.prepend(headerGenerator(playerName?.slice(0, 12) ?? "PLAYER"))

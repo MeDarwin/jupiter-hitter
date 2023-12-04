@@ -1,6 +1,8 @@
 import { BackgroundScene } from "./BackgroundScene";
 import { BallScene } from "./BallScene";
 import { BotScene, PlayerScene } from "./CharacterScene";
+import { ScoreScene } from "./ScoreScene";
+import { TimerScene } from "./TimerScene";
 
 const /** @type {HTMLCanvasElement} */ canvas = document.getElementById("cvs");
 const /** @type {CanvasRenderingContext2D} */ ctx = canvas.getContext("2d");
@@ -17,7 +19,7 @@ export class StartScene {
     this.randNumGenerate = () => Math.floor(Math.random() * 4 + 1);
     this.startCountdown = () => {
       const countdown = setInterval(() => {
-        if (this.countdown === 0) {
+        if (this.countdown === 1) {
           this.gameStatus = "GAME";
           clearInterval(countdown); //cleanup
         }
@@ -42,6 +44,8 @@ export class StartScene {
     this.background.addColorStop(0, this.purpleColor);
     /* --------------------------------- BG GRAD -------------------------------- */
     this.backgroundScene = new BackgroundScene(this);
+    this.timerScene = new TimerScene(this);
+    this.scoreScene = new ScoreScene(this);
     this.ballScene = new BallScene(this);
     this.playerScene = new PlayerScene(this, this.assignNumber[0]);
     this.bot1 = new BotScene(this, this.assignNumber[1], 1);
@@ -61,8 +65,10 @@ export class StartScene {
     this.bot3.isAlive && this.bot3.draw();
     this.backgroundScene.draw();
     this.ballScene.draw();
+    this.timerScene.draw();
+    this.scoreScene.draw();
     if (this.gameStatus === "COUNTDOWN") {
-      this.fontSize -= 1;
+      this.fontSize -= 1.5;
       ctx.font = `bold ${this.fontSize}px Kdam Thmor Pro`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -75,16 +81,19 @@ export class StartScene {
    * @return {void} This function does not return any value.
    */
   update() {
-    if (this.gameStatus === "UNINITIALIZED") return;
+    if (this.gameStatus === "UNINITIALIZED") return; //dont do anything if not initialized
     this.isMute && this.backgroundScene.bgMusic.pause()
     !this.isMute && this.backgroundScene.bgMusic.play()
-    if (this.gameStatus !== "GAME") return; //stop if not on game
+    if (this.gameStatus !== "GAME") return; //stop here if not on game
     this.backgroundScene.update();
     this.ballScene.update();
     this.playerScene.isAlive && this.playerScene.update();
     this.bot1.isAlive && this.bot1.update();
     this.bot2.isAlive && this.bot2.update();
     this.bot3.isAlive && this.bot3.update();
+    if (!this.bot1.isAlive && !this.bot2.isAlive && !this.bot3.isAlive) {
+      this.gameStatus = "WIN"
+    }
   }
 }
 
