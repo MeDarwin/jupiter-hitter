@@ -6,7 +6,9 @@ export class ScoreScene {
         this.game = game;
         console.log("ScoreScene.INIT");
         this.highScore = localStorage.getItem("highScore") ?? null;
-        this.highScoreTimeStamp = this.highScore && new Date(parseInt(this.highScore) * 1000).toISOString().slice(11, 19);
+        this.highScoreTimeStamp = this.highScore
+            ? new Date(parseInt(this.highScore) * 1000).toISOString().slice(11, 19)
+            : null;
     }
     draw() {
         //on game over (lose)
@@ -21,7 +23,7 @@ export class ScoreScene {
             ctx.fillText(`You Lose`, 0, -100)
             ctx.font = "22px Kdam Thmor Pro";
             ctx.fillText(`High Score:`, 0, 0)
-            ctx.fillText(`${this.highScoreTimeStamp}`, 0, 30)
+            ctx.fillText(`${this.highScoreTimeStamp ?? "NO HIGH SCORE YET"}`, 0, 30)
             ctx.restore() //restore context to last saved context (default context)
         }
     }
