@@ -9,9 +9,9 @@ export class BackgroundScene {
         this.jupiterRotationAngle = 0
         /* ------------------------------ ASSETS PRELOAD ----------------------------- */
         this.jupiterPng = new Image();
-        this.jupiterPng.src = "/assets/img/jupiter.png";
+        this.jupiterPng.src = "https://medarwin.github.io/jupiter-hitter/assets/img/jupiter.png";
         this.bgMusic = new Audio();
-        this.bgMusic.src = "/assets/audio/bg.mp3";
+        this.bgMusic.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/bg.mp3";
         this.bgMusic.loop = true
         /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     }

@@ -10,12 +10,12 @@ const sfxHit1 = new Audio();
 const sfxHit2 = new Audio();
 const sfxCaught = new Audio();
 sfxCaught.volume = 0.5; // THE SFX IS SO LOUD NGL
-sfxCaught.src = "/assets/audio/caught.wav";
+sfxCaught.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/caught.wav";
 sfxDied.volume = 0.5; // THE SFX IS SO LOUD NGL
-sfxDied.src = "/assets/audio/destroy.wav";
-sfxDodge.src = "/assets/audio/dodge.wav";
-sfxHit1.src = "/assets/audio/hit-0.wav";
-sfxHit2.src = "/assets/audio/hit-1.wav";
+sfxDied.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/destroy.wav";
+sfxDodge.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/dodge.wav";
+sfxHit1.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/hit-0.wav";
+sfxHit2.src = "https://medarwin.github.io/jupiter-hitter/assets/audio/hit-1.wav";
 const sfxHit = [sfxHit1, sfxHit2];
 /* ------------------------------- AUDIO LOAD ------------------------------- */
 
@@ -44,9 +44,9 @@ export class PlayerScene {
     this.playerSpriteDefault = new Image();
     this.playerSpriteCaught = new Image();
     this.playerSpriteHit = new Image();
-    this.playerSpriteDefault.src = "/assets/img/player.png";
-    this.playerSpriteCaught.src = "/assets/img/bot0-caught.png";
-    this.playerSpriteHit.src = "/assets/img/bot0-hit.png";
+    this.playerSpriteDefault.src = "https://medarwin.github.io/jupiter-hitter/assets/img/player.png";
+    this.playerSpriteCaught.src = "https://medarwin.github.io/jupiter-hitter/assets/img/bot0-caught.png";
+    this.playerSpriteHit.src = "https://medarwin.github.io/jupiter-hitter/assets/img/bot0-hit.png";
     /* ------------------------------ ASSETS PRELOAD ----------------------------- */
     this.playerSprite = this.playerSpriteDefault;
     /* ------------------------------- CONTROLLER ------------------------------- */
@@ -184,9 +184,9 @@ export class BotScene {
     this.botSpriteDefault = new Image();
     this.botSpriteCaught = new Image();
     this.botSpriteHit = new Image();
-    this.botSpriteDefault.src = `/assets/img/bot${spriteNumber}.png`;
-    this.botSpriteCaught.src = `/assets/img/bot${spriteNumber}-caught.png`;
-    this.botSpriteHit.src = `/assets/img/bot${spriteNumber}-hit.png`;
+    this.botSpriteDefault.src = `https://medarwin.github.io/jupiter-hitter/assets/img/bot${spriteNumber}.png`;
+    this.botSpriteCaught.src = `https://medarwin.github.io/jupiter-hitter/assets/img/bot${spriteNumber}-caught.png`;
+    this.botSpriteHit.src = `https://medarwin.github.io/jupiter-hitter/assets/img/bot${spriteNumber}-hit.png`;
     /* ------------------------------ IMAGE PRELOAD ----------------------------- */
     this.botSprite = this.botSpriteDefault;
   }
