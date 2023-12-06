@@ -11,8 +11,8 @@ export class ScoreScene {
             : null;
     }
     draw() {
-        //on game over (lose)
-        if (this.game.gameStatus === "GAMEOVER") {
+        //on game done
+        if (this.game.gameStatus === "WIN" || this.game.gameStatus === "GAMEOVER") {
             ctx.save() //save default context (where ctx x and y = 0, not translated)
             ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2) //translate to center
             ctx.fillStyle = "#f5bf41";
@@ -20,12 +20,19 @@ export class ScoreScene {
             ctx.fillStyle = "whitesmoke";
             ctx.textBaseline = "top"
             ctx.font = "32px Kdam Thmor Pro";
-            ctx.fillText(`You Lose`, 0, -100)
+            ctx.fillText(`You ${this.game.gameStatus === "WIN" ? "Win" : "Lose"}`, 0, -100)
+            ctx.fillText(
+                `Your Score: ${this.game.timerScene.hour.toString().padStart(2, "0")}:${this.game.timerScene.minute.toString().padStart(2, "0")}:${this.game.timerScene.second.toString().padStart(2, "0")}`
+                , 0, -40)
+            ctx.fillText(`Click anywhere to restart`, 0, 80)
             ctx.font = "22px Kdam Thmor Pro";
-            ctx.fillText(`High Score:`, 0, 0)
+            ctx.fillText(`Last High Score:`, 0, 0)
             ctx.fillText(`${this.highScoreTimeStamp ?? "NO HIGH SCORE YET"}`, 0, 30)
             ctx.restore() //restore context to last saved context (default context)
         }
     }
-    update() { }
+    update() {
+        if (this.game.gameStatus === "WIN" || this.game.gameStatus === "GAMEOVER")
+            return window.document.addEventListener("click", () => window.location.reload());
+    }
 }

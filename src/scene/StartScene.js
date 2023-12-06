@@ -94,6 +94,7 @@ export class StartScene {
     if (!this.bot1.isAlive && !this.bot2.isAlive && !this.bot3.isAlive) {
       this.gameStatus = "WIN"
     }
+    this.scoreScene.update()
   }
 }
 

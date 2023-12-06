@@ -22,8 +22,14 @@ export class TimerScene {
     startTimer() {
         this.timer = setInterval(() => {
             if (this.game.gameStatus !== "GAME") {
-                localStorage.setItem("highScore",
-                    Math.max(localStorage.getItem("highScore") ?? 0, ((this.hour * 60 * 60) + (this.minute * 60) + this.second))); //store high score (in second)
+                const currentScore = (this.hour * 3600) + (this.minute * 60) + this.second //get the highest score
+                const hiscore = Math.max(localStorage.getItem("highScore") ?? 0, currentScore) //store the highest
+                if (currentScore > localStorage.getItem("highScore")) {
+                    localStorage.setItem("highScore", hiscore); //store high score (in second)
+                    localStorage.setItem("hours", this.hour)
+                    localStorage.setItem("minutes", this.minute)
+                    localStorage.setItem("seconds", this.second)
+                }
                 return clearInterval(this.timer);
             }
             this.second++;
