@@ -11,7 +11,7 @@ export class BallScene {
         this.speed = 2.5
         /* ------------------------------ BALL PRELOAD ------------------------------ */
         this.ball = new Image()
-        this.ball.src = "../../assets/img/ball.png"
+        this.ball.src = "/assets/img/ball.png"
         /* ------------------------------ BALL PRELOAD ------------------------------ */
     }
     draw() {
