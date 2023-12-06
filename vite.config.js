@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => {
     }
     if (command === "build") {
         return {
-            base: "/", //repo name for deploy
+            base: "/jupiter-hitter", //repo name for deploy
         }
     }
 })
